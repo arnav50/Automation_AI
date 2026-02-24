@@ -1,7 +1,6 @@
 let isloggedIn = true;
 let userRole = "editor";
 
-
 if (isloggedIn) {
     if (userRole === "admin") {
         console.log("You can login all and All admin acess you have");
