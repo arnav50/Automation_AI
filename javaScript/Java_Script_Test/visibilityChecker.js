@@ -1,50 +1,36 @@
-/*In UI automation (Cypress/Playwright), you often need to validate element states before interacting with them. Write a JavaScript program that checks an element's properties (isPresent, isDisplayed, isEnabled) and prints the appropriate action a QA engineer should take. Use strict equality (===), logical operators (&&, ||), and the ternary operator for severity level.
+function checkElement(isPresent, isDisplayed, isEnabled) {
 
-States: READY (all true), DISABLED (present+displayed but not enabled), HIDDEN (present but not displayed), NOT FOUND (not present).
-Severity: CRITICAL (not present), WARNING (not displayed or not enabled), OK (all good). */
+    let status;
+    let action;
 
+    if (isPresent === false) {
+        status: "Not Found";
+        action = "Element is present in DOM. check locator or page load.";
+    }
 
-function checkElementState(isPresent, isDisplayed, isEnable){
+    else if (isPresent === true && isDisplayed === false) {
+        status = "Hidden";
+        action = "Element is present but hidden. wait for enable state or check"
+    }
 
-let state;
-let action;
+    else if (isPresent === true && isDisplayed === true && isEnabled === false) {
+        status: "Disabled";
+        action = "Element is visible but disabled. Wait for enable state or check preconditions.";
+    }
 
-if(isPresent === true && isDisplayed === true && isEnable === true ){
-state = "Ready";
-action = "Safe to interact with the element.";
-}
+    else if (isPresent === true && isDisplayed === true && isEnabled === true) {
+        status = "Ready";
+        action = "Element is ready for interaction";
+    }
 
-else if (isPresent === true && isDisplayed === true && isEnable === false){
-state = "DISABLED";
-action = "Elements are present and displayed but not enabled";
-}
- 
-else if (isPresent === true && isDisplayed === false){
-State = "HIDDEN";
-action = "Elements are present but not displayed";
-}
+    const severity = (isPresent === false) ? "Critical" : (isDisplayed === false || isEnabled === false) ? "Warning" : "Ok";
 
-else if (isPresent === false){
-State = "Not FOUND";
-action = "Elements are not present";
-}
-
- const severity = (isPresent === false)
-  ? "CRITICAL" : (isDisplayed === false || isEnable === false) 
-  ? "WARNING"  : "OK";
- 
- console.log("State :",  state);
- console.log("Severity :",  severity);
- console.log("Required Action :",  action);
+    console.log("Status :", status, "Serverity :", severity, "Action :", action);
 
 }
 
-checkElementState(true, true, true);
+let isPresent = true;
+let isDisplayed = true;
+let isEnabled = false;
 
-checkElementState(true, true, false);
-
-checkElementState(true, false, true);
-
-checkElementState(false, false, false);
-
-
+checkElement(isPresent, isDisplayed, isEnabled);
