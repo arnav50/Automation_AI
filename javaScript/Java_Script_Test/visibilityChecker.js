@@ -1,36 +1,43 @@
 function checkElement(isPresent, isDisplayed, isEnabled) {
+	const status = !isPresent
+		? 'Not Found'
+		: !isDisplayed
+			? 'Hidden'
+			: !isEnabled
+				? 'Disabled'
+				: 'Ready';
 
-    let status;
-    let action;
+	const severity = !isPresent ? 'Critical' : (!isDisplayed || !isEnabled) ? 'Warning' : 'Ok';
 
-    if (isPresent === false) {
-        status: "Not Found";
-        action = "Element is present in DOM. check locator or page load.";
-    }
+	let action;
+	switch (status) {
+		case 'Not Found':
+			action = 'Element not found in DOM. Verify selector or wait for page load.';
+			break;
+		case 'Hidden':
+			action = 'Element present but not displayed. Consider waiting, scrolling, or checking CSS.';
+			break;
+		case 'Disabled':
+			action = 'Element visible but disabled. Check preconditions or enable flow.';
+			break;
+		case 'Ready':
+			action = 'Element ready for interaction.';
+			break;
+	}
 
-    else if (isPresent === true && isDisplayed === false) {
-        status = "Hidden";
-        action = "Element is present but hidden. wait for enable state or check"
-    }
-
-    else if (isPresent === true && isDisplayed === true && isEnabled === false) {
-        status: "Disabled";
-        action = "Element is visible but disabled. Wait for enable state or check preconditions.";
-    }
-
-    else if (isPresent === true && isDisplayed === true && isEnabled === true) {
-        status = "Ready";
-        action = "Element is ready for interaction";
-    }
-
-    const severity = (isPresent === false) ? "Critical" : (isDisplayed === false || isEnabled === false) ? "Warning" : "Ok";
-
-    console.log("Status :", status, "Serverity :", severity, "Action :", action);
-
+	const result = { status, severity, action };
+	console.log('Visibility check:', result);
+	return result;
 }
 
-let isPresent = true;
-let isDisplayed = true;
-let isEnabled = false;
 
-checkElement(isPresent, isDisplayed, isEnabled);
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = { checkElement };
+}
+
+// Example usage when run directly
+if (require && require.main === module) {
+	const sample = checkElement(true, true, false);
+	// eslint-disable-next-line no-console
+	console.log('Sample result:', sample);
+}
