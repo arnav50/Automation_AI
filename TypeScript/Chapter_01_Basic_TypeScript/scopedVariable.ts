@@ -7,9 +7,10 @@ function scopeVAr() {
     console.log(a);
 
     {
+        var a: number = 30;
         console.log(a);
     }
-
+    console.log(a);
 }
 scopeVAr();
 
@@ -20,11 +21,13 @@ function scopeLet() {
     console.log(c);
     console.log(scopedLet);
     {
+
+        let c: number = 70;
         console.log(c);
-        for (let i = 0; i <= c; i++);
-        console.log(i);
 
     }
+
+    console.log(c);
 }
 
 scopeLet();

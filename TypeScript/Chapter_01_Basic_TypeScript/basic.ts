@@ -16,6 +16,5 @@ if (age > 18) {
 let numa: number = 10;
 let numb: number = 20;
 
-console.log(a + b);
+console.log(numa + numb);
 
-export {};
